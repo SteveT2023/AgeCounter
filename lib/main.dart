@@ -45,6 +45,34 @@ class Counter with ChangeNotifier {
     value -= 1;
     notifyListeners();
   }
+
+  String get milestone {
+    if (value <= 12) {
+      return 'You are a child!';
+    } else if (value <= 19) {
+      return 'Teenager time!';
+    } else if (value <= 30) {
+      return 'You are a young adult!';
+    } else if (value <= 50) {
+      return 'You are an adult!';
+    } else {
+      return 'Senior';
+    }
+  }
+
+  Color get milestoneColor {
+    if (value <= 12) {
+      return Colors.lightBlue;
+    } else if (value <= 19) {
+      return Colors.greenAccent;
+    } else if (value <= 30) {
+      return Colors.yellowAccent;
+    } else if (value <= 50) {
+      return Colors.orange;
+    } else {
+      return Colors.grey;
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -72,38 +100,46 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Age Counter'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer<Counter>(
-              builder: (context, counter, child) => Text(
-                'I am ${counter.value} years old.',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
+      body: Consumer<Counter>(
+        builder: (context, counter, child) => Container(
+          color: counter.milestoneColor,
+          child: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    var counter = context.read<Counter>();
-                    counter.increment();
-                  },
-                  child: const Text('Increment'),
+                Text(
+                  'I am ${counter.value} years old.',
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    var counter = context.read<Counter>();
-                    counter.decrement();
-                  },
-                  child: const Text('Decrement'),
+                const SizedBox(height: 20),
+                Text(
+                  'Milestone: ${counter.milestone}',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        var counter = context.read<Counter>();
+                        counter.increment();
+                      },
+                      child: const Text('Increase Age'),
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        var counter = context.read<Counter>();
+                        counter.decrement();
+                      },
+                      child: const Text('Decrease Age'),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
