@@ -46,6 +46,11 @@ class Counter with ChangeNotifier {
     notifyListeners();
   }
 
+  void setValue(int newValue) {
+    value = newValue;
+    notifyListeners();
+  }
+
   String get milestone {
     if (value <= 12) {
       return 'You are a child!';
@@ -115,6 +120,17 @@ class MyHomePage extends StatelessWidget {
                 Text(
                   'Milestone: ${counter.milestone}',
                   style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 20),
+                Slider(
+                  value: counter.value.toDouble(),
+                  min: 0,
+                  max: 99,
+                  divisions: 99,
+                  label: counter.value.toString(),
+                  onChanged: (double newValue) {
+                    counter.setValue(newValue.toInt());
+                  },
                 ),
                 const SizedBox(height: 20),
                 Row(
