@@ -78,6 +78,16 @@ class Counter with ChangeNotifier {
       return Colors.grey;
     }
   }
+
+  Color get progressBarColor {
+    if (value <= 33) {
+      return Colors.green;
+    } else if (value <= 67) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -131,6 +141,12 @@ class MyHomePage extends StatelessWidget {
                   onChanged: (double newValue) {
                     counter.setValue(newValue.toInt());
                   },
+                ),
+                const SizedBox(height: 20),
+                LinearProgressIndicator(
+                  value: counter.value / 99,
+                  color: counter.progressBarColor,
+                  backgroundColor: Colors.grey[300],
                 ),
                 const SizedBox(height: 20),
                 Row(
